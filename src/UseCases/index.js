@@ -1,8 +1,7 @@
 import makeAddUser from "./Users/add";
 import makeEditUser from "./Users/edit";
 import makeRemoveUser from "./Users/remove";
-import { default as dataAccess } from "../DataAccess";
-const { UserDataAccess } = dataAccess;
+import { UserDataAccess } from "../DataAccess";
 
 const addUser = makeAddUser({ UserDataAccess });
 const editUser = makeEditUser({ UserDataAccess });

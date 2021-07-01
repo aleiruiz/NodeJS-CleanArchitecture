@@ -1,18 +1,18 @@
 import makeAddUser from "./add";
 import makeFakeUser from "../../../__test__/fixtures/entities/user";
 import connectToDB from "../../../__test__/fixtures/db";
-import UserDataAccess from "../../DataAccess/User";
+import UserDB from "../../DataAccess/User";
 
 describe("add user", () => {
-  let usersDb;
+  let UserDataAccess;
   beforeAll(async () => {
-    usersDb = await UserDataAccess({ connectToDB });
+    UserDataAccess = async () => await UserDB({ connectToDB });
   });
 
   it("inserts users in the database", async () => {
     const newUser = makeFakeUser();
     const addUser = makeAddUser({
-      usersDb,
+      UserDataAccess,
     });
     const inserted = await addUser({
       ...newUser,

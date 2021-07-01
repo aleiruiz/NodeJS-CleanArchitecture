@@ -1,18 +1,20 @@
 import makeRemoveUser from "./remove";
-import UserDataAccess from "../../DataAccess/User";
+import UserDB from "../../DataAccess/User";
 import makeFakeUser from "../../../__test__/fixtures/entities/user";
 import connectToDB from "../../../__test__/fixtures/db";
 
 describe("remove User", () => {
-  let usersDb;
+  let UserDataAccess;
+  let UserAccess;
 
   beforeAll(async () => {
-    usersDb = await UserDataAccess({ connectToDB });
+    (UserDataAccess = async () => await UserDB({ connectToDB })),
+      (UserAccess = await UserDB({ connectToDB }));
   });
 
   it("handles non existent Users", async () => {
     const removeUser = makeRemoveUser({
-      usersDb,
+      UserDataAccess,
     });
     const fakeUser = makeFakeUser();
     const expected = {
@@ -26,13 +28,13 @@ describe("remove User", () => {
 
   it("deletes Users", async () => {
     const removeUser = makeRemoveUser({
-      usersDb,
+      UserDataAccess,
     });
 
     const fakeUser = makeFakeUser();
-    await usersDb.insert({ userInfo: fakeUser });
+    await UserAccess.insert({ userInfo: fakeUser });
 
-    const found = await usersDb.findById(fakeUser.id);
+    const found = await UserAccess.findById(fakeUser.id);
     expect(found).toEqual({
       ...fakeUser,
       _id: found._id,
@@ -48,7 +50,7 @@ describe("remove User", () => {
     const actual = await removeUser({ id: fakeUser.id });
     expect(actual).toEqual(expected);
 
-    const notFound = await usersDb.findById(fakeUser.id);
+    const notFound = await UserAccess.findById(fakeUser.id);
     expect(notFound).toBe(null);
   });
 });

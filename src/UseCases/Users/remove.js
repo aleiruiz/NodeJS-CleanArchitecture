@@ -1,8 +1,9 @@
-export default function makeRemoveUser({ usersDb }) {
+export default function makeRemoveUser({ UserDataAccess }) {
   return async function removeUser({ id } = {}) {
     if (!id) {
       throw new Error("You must supply a user id.");
     }
+    let usersDb = await UserDataAccess();
 
     const userToBeDeleted = await usersDb.findById(id);
 
@@ -10,7 +11,7 @@ export default function makeRemoveUser({ usersDb }) {
       return deleteNothing();
     }
 
-    return hardDelete(userToBeDeleted);
+    return hardDelete(userToBeDeleted, usersDb);
   };
 
   function deleteNothing() {
@@ -21,7 +22,7 @@ export default function makeRemoveUser({ usersDb }) {
     };
   }
 
-  async function hardDelete(User) {
+  async function hardDelete(User, usersDb) {
     await usersDb.remove(User);
     return {
       deletedCount: 1,

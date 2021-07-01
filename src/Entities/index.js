@@ -14,4 +14,4 @@ const User = BuildUser({
   validateEmailFormat,
 });
 
-export default { User };
+export { User };

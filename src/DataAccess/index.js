@@ -13,5 +13,6 @@ export async function connectToDB() {
   return client.db(dbName);
 }
 
-const UserDataAccess = User({ connectToDB });
-export default { UserDataAccess };
+const UserDataAccess = async () => await User({ connectToDB });
+
+export { UserDataAccess };

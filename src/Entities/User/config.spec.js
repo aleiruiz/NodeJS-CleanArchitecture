@@ -1,6 +1,5 @@
 import makeFakeUser from "../../../__test__/fixtures/entities/user";
-import { default as Entities } from "../index";
-const { User } = Entities;
+import { User } from "../index";
 
 describe("user", () => {
   it("must have an email", () => {

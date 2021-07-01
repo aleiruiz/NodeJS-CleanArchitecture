@@ -52,10 +52,10 @@ describe("User API", () => {
       expect(response.status).toBe(400);
       expect(response.data.error).toBeDefined();
     });
-    it("requires user to contain a valid postId", async () => {
+    it("requires user to contain a valid id", async () => {
       const response = await axios.post(
         "/users",
-        makeFakeUser({ id: undefined, postId: undefined })
+        makeFakeUser({ id: undefined })
       );
       expect(response.status).toBe(400);
       expect(response.data.error).toBeDefined();
@@ -72,14 +72,6 @@ describe("User API", () => {
       expect(response.data.posted.text).toBe("<p>hello!</p>");
       return usersDb.remove(response.data.posted);
     });
-    it("won't publish profanity", async () => {
-      const profane = makeFakeUser({ id: undefined, text: "You suck!" });
-      const response = await axios.post("/users", profane);
-      expect(response.status).toBe(201);
-      expect(response.data.posted.published).toBe(false);
-      return usersDb.remove(response.data.posted);
-    });
-    it.todo("won't publish spam");
   });
   describe("modfying users", () => {
     // Content moderator API only allows 1 request per second.

@@ -1,6 +1,4 @@
-import { default as Entities } from "../../Entities";
-
-const { User } = Entities;
+import { User } from "../../Entities";
 
 export default async function UserDataAccess({ connectToDB }) {
   const db = await connectToDB();
