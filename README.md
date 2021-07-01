@@ -1,4 +1,4 @@
-# Comments Microservice API
+# Clean Architecture Microservice API
 
 Microservice structure based on DevMastery's video and Bob Martin's Clean Architecture
 
