@@ -1,0 +1,16 @@
+{
+  "404": "Recurso No Encontrado.",
+  "incorrect_password": "Contraseña Incorrecta",
+  "original_extension_invalid": "El archivo no tiene el formato adecuado",
+  "error_file_upload": "Error al subir el archivo",
+  "unauthorized": "El usuario no esta autenticado",
+  "user_already_exists": "Este usuario ya existe",
+  "password_confirmation_needed": "La contraseña debe ser confirmada",
+  "user_email_invalid": "El usuario debe tener un email valido.",
+  "user_username_invalid": "El usuario debe tener un nombre de usuario valido.",
+  "user_name_invalid": "El nombre del usuario no es valido",
+  "user_invalid_password": "La contraseña es invalida",
+  "user_id_invalid": "El usuario debe tener un id valido",
+  "error_creating_user": "Error al intentar crear un nuevo usuario",
+  "email_missing": "El email no fue recibido"
+}

@@ -40,6 +40,11 @@ dist
 public
 *.zip
 
+#deployment
+.deployment
+.github/
+.github
+
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release

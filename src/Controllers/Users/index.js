@@ -1,4 +1,4 @@
-import { addUser, editUser, listUsers, removeUser } from "../../UseCases";
+import { addUser, editUser, getUser, removeUser } from "../../UseCases";
 import makeDeleteUser from "./delete";
 import makeGetUsers from "./get";
 import makePostUser from "./post";
@@ -6,7 +6,7 @@ import makePatchUser from "./patch";
 
 const deleteUser = makeDeleteUser({ removeUser });
 const getUsers = makeGetUsers({
-  listUsers,
+  getUser,
 });
 const postUser = makePostUser({ addUser });
 const patchUser = makePatchUser({ editUser });

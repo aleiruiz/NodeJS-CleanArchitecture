@@ -1,9 +1,9 @@
-export default async function notFound () {
+export default async function notFound(httpRequest) {
   return {
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: { error: 'Not found.' },
-    statusCode: 404
-  }
+    body: { error: httpRequest.trans("404") },
+    statusCode: 404,
+  };
 }

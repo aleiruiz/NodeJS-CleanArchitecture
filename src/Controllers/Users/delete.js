@@ -8,7 +8,7 @@ export default function makeDeleteUser({ removeUser }) {
       return {
         headers,
         statusCode: deleted.deletedCount === 0 ? 404 : 200,
-        body: { deleted },
+        body: { ...deleted },
       };
     } catch (e) {
       // TODO: Error logging

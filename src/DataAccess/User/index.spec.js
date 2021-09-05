@@ -1,56 +1,45 @@
 import connectToDB from "../../../__test__/fixtures/db";
 import UserDataAccess from "./index";
+import GenericsDB from "../Generics";
 import makeFakeUser from "../../../__test__/fixtures/entities/user";
 
 describe("users db", () => {
   let usersDb;
 
   beforeEach(async () => {
-    usersDb = await UserDataAccess({ connectToDB });
-  });
-
-  it("lists users", async () => {
-    const inserts = await Promise.all(
-      [makeFakeUser(), makeFakeUser(), makeFakeUser()].map((fakeUser) =>
-        usersDb.insert({ userInfo: fakeUser })
-      )
-    );
-    const found = await usersDb.findAll();
-    expect.assertions(inserts.length);
-    return inserts.forEach((insert) => expect(found).toContainEqual(insert));
+    let dataAccess = await GenericsDB({ connectToDB });
+    usersDb = await UserDataAccess({ dataAccess });
   });
 
   it("inserts a user", async () => {
     const user = makeFakeUser();
-    const result = await usersDb.insert({ userInfo: user });
+    const result = await usersDb.insert({ ...user });
     return expect({
       ...result,
-      password: user.password,
-      confirmPassword: user.confirmPassword,
-    }).toEqual(user);
+      ...user,
+    }).toMatchObject(user);
   });
 
   it("finds a user by id", async () => {
     const user = makeFakeUser();
-    await usersDb.insert({ userInfo: user });
-    const found = await usersDb.findById(user.id);
-    expect({ ...found, password: user.password }).toEqual({
-      ...user,
-      _id: found._id,
-    });
+    await usersDb.insert({ ...user });
+    const found = await usersDb.findById({ ...user });
+    expect(found).toMatchObject(user);
   });
 
   it("updates a user", async () => {
     const user = makeFakeUser();
-    await usersDb.insert({ userInfo: user });
+    await usersDb.insert({ ...user });
     user.userName = "changed";
-    const updated = await usersDb.update(user);
-    return expect(updated.userName).toBe("changed");
+    const updated = await usersDb.update({ ...user });
+    expect(updated).toBe(1);
+    const inserted = await usersDb.findById({ ...user });
+    expect(inserted.userName).toBe("changed");
   });
 
   it("deletes a user", async () => {
     const user = makeFakeUser();
-    await usersDb.insert({ userInfo: user });
+    await usersDb.insert({ ...user });
     return expect(await usersDb.remove(user)).toBe(1);
   });
 });

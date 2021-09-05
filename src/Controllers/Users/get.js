@@ -1,12 +1,10 @@
-export default function makeGetUsers({ listUsers }) {
+export default function makeGetUsers({ getUser }) {
   return async function getUsers(httpRequest) {
     const headers = {
       "Content-Type": "application/json",
     };
     try {
-      const listOfUsers = await listUsers({
-        postId: httpRequest.query.postId,
-      });
+      const listOfUsers = await getUser({ ...httpRequest.query });
       return {
         headers,
         statusCode: 200,

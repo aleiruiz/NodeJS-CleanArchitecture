@@ -1,21 +1,28 @@
-export default function makeEditUser({ UserDataAccess }) {
-  return async function editUser({ id, ...changes } = {}) {
+export default function makeEditUser({ UserDataAccess, fileUtilities }) {
+  return async function editUser({ id, files, ...changes } = {}) {
     if (!id) {
       throw new Error("You must supply an id.");
     }
     let usersDb = await UserDataAccess();
 
-    const existing = await usersDb.findById(id);
+    const existing = await usersDb.findById({ id });
 
     if (!existing) {
       throw new RangeError("user not found.");
     }
 
-    const updated = await usersDb.update({
-      ...existing,
+    const user = {
       ...changes,
-      modifiedOn: null,
-    });
-    return { ...existing, ...updated };
+    };
+
+    if (files) {
+      user.profilePic = await fileUtilities.uploadBlob(
+        files.profilePic,
+        "prf",
+        "image"
+      );
+    }
+
+    return await usersDb.update({ ...user, id });
   };
 }

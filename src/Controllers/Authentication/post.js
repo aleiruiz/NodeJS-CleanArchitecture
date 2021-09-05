@@ -1,21 +1,17 @@
-export default function makePostUser({ addUser }) {
-  return async function postUser(httpRequest) {
+export default function makeLogin({ login }) {
+  return async function postAuthentication(httpRequest) {
     try {
-      const { ...userInfo } = httpRequest.body;
-
-      const posted = await addUser({
-        ...userInfo,
-        files: httpRequest.files,
-      });
+      const { ...credentials } = httpRequest.body;
+      const loggedUser = await login(credentials);
       return {
         headers: {
           "Content-Type": "application/json",
-          "Last-Modified": new Date(userInfo.modifiedOn).toUTCString(),
         },
         statusCode: 200,
-        body: { ...posted },
+        body: { ...loggedUser },
       };
     } catch (e) {
+      // TODO: Error logging
       return {
         headers: {
           "Content-Type": "application/json",

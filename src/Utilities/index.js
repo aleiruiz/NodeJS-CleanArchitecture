@@ -1,8 +1,10 @@
-import validateEmailFormat from "./validateEmailFormat";
-import { default as hashUtilities } from "./hashUtilities";
-import idUtilities from "./idUtilities";
-import sanitizeHTMLText from "./sanitizeHTMLText";
-import validateIp from "./validateIp";
+import validateEmailFormat from "./ValidateEmailFormat";
+import { default as hashUtilities } from "./HashUtilities";
+import idUtilities from "./IdUtilities";
+import sanitizeHTMLText from "./SanitizeHTMLText";
+import validateIp from "./ValidateIp";
+import fileUtilities from "./FileUtilities";
+import jwtUtilities from "./JWTUtilities";
 
 export {
   validateEmailFormat,
@@ -10,4 +12,6 @@ export {
   idUtilities,
   sanitizeHTMLText,
   validateIp,
+  jwtUtilities,
+  fileUtilities,
 };

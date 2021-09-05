@@ -1,16 +1,17 @@
 {
-  "name": "comments-api",
+  "name": "libidoon-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && babel src -d dist",
+    "build": "npm run clean && babel src -d dist && babel Locales -d dist/Locales --copy-files",
     "now-build": "npm run build",
     "clean": "rimraf dist",
     "db": "babel-node ./db/index.js",
     "dev": "nodemon --exec babel-node ./src/index.js",
     "start": "npm run clean && npm run build && npm run db && cd dist && node index.js",
-    "test": "jest src --watch",
+    "test": "jest src",
+    "test-watch": "jest src --watch",
     "test:e2e": "jest ./__test__ --runInBand"
   },
   "author": "Horencio Ruiz <aleihrm@gmail.com>",
@@ -22,13 +23,18 @@
     "testEnvironment": "./jest-mongo.js"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.0.0",
+    "@types/dotenv": "^4.0.3",
     "axios": "^0.21.1",
     "babel-plugin-inline-dotenv": "^1.2.2",
     "body-parser": "^1.18.3",
     "cuid": "^2.1.6",
     "express": "^4.16.4",
+    "express-fileupload": "^1.2.1",
+    "i18n": "^0.13.3",
     "ip-regex": "^4.0.0",
     "is-valid-email": "0.0.4",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.1.13",
     "p-reduce": "^2.0.0",
     "sanitize-html": "^2.4.0"
@@ -47,11 +53,12 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "express-swagger-generator": "^1.1.17",
     "faker": "^4.1.0",
     "graceful-fs": "^4.2.6",
     "jest": "^24.3.1",
     "mongodb-memory-server": "^4.0.2",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.12",
     "rimraf": "^2.6.3"
   },
   "resolutions": {

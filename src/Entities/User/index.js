@@ -1,3 +1,14 @@
+/**
+ * @typedef User
+ * @property {string} id
+ * @property {string} profilePic
+ * @property {string} userName
+ * @property {string} email.required
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {integer} createdOn
+ * @property {integer} modifiedOn
+ */
 export default function BuildUser({
   idUtilities,
   hashUtilities,
@@ -9,34 +20,44 @@ export default function BuildUser({
     userName,
     firstName,
     lastName,
+    profilePic,
     password,
-    salt = hashUtilities.generateSalt(),
+    salt,
     createdOn = Date.now(),
     modifiedOn = Date.now(),
     deletedOn = null,
   } = {}) {
-    if (!idUtilities.isValidId(id)) {
-      throw new Error("User must have a valid id.");
-    }
-    if (!email || !validateEmailFormat(email)) {
-      throw new Error("User must have a valid email.");
-    }
-    if (!userName) {
-      throw new Error("User must have a valid name.");
-    }
-    if (!firstName || !lastName) {
-      throw new Error("User must have a valid first and last name.");
-    }
-    if (!password || password.length < 6) {
-      throw new Error(
-        "User must have a valid password, please make sure to make the password at least 6 characters."
-      );
-    }
+    const user = {
+      id,
+      email,
+      userName,
+      firstName,
+      lastName,
+      profilePic,
+      password,
+      salt,
+      createdOn,
+      modifiedOn,
+      deletedOn,
+    };
 
-    password = hashUtilities.createsPassword(password, salt);
+    const validate = () => {
+      if (!idUtilities.isValidId(id)) {
+        throw new Error("user_id_invalid");
+      }
+      if (!email || !validateEmailFormat(email)) {
+        throw new Error("user_email_invalid");
+      }
+      if (!userName) {
+        throw new Error("user_username_invalid");
+      }
+      if (!firstName || !lastName) {
+        throw new Error("user_name_invalid");
+      }
+    };
 
     const validatePassword = (enteredPassword) => {
-      hashUtilities.validatesPassword(enteredPassword, salt);
+      return hashUtilities.validatesPassword(enteredPassword, salt, password);
     };
 
     const returnAllValues = () => {
@@ -46,6 +67,7 @@ export default function BuildUser({
         userName,
         firstName,
         lastName,
+        profilePic,
         password,
         salt,
         createdOn,
@@ -56,11 +78,29 @@ export default function BuildUser({
 
     const returnUpdatableValues = () => {
       return {
-        email,
+        profilePic,
         userName,
+        email,
         firstName,
         lastName,
       };
+    };
+
+    const returnReadableValues = () => {
+      return {
+        id,
+        profilePic,
+        userName,
+        email,
+        firstName,
+        lastName,
+        createdOn,
+        modifiedOn,
+      };
+    };
+
+    const generateJWTToken = () => {
+      return JWTUtilities.generateToken();
     };
 
     const returnFullName = () => {
@@ -68,14 +108,18 @@ export default function BuildUser({
     };
 
     return Object.freeze({
+      ...user,
+      validate,
       validatePassword,
       returnFullName,
       returnAllValues,
+      returnUpdatableValues,
       getId: () => id,
       isDeleted: () => deletedOn !== null,
       getCreatedOn: () => createdOn,
       returnHashedPassword: () => password,
-      returnUpdatableValues,
+      returnReadableValues,
+      generateJWTToken,
       isSoftDeletable: false,
     });
   };

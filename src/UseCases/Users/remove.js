@@ -5,7 +5,7 @@ export default function makeRemoveUser({ UserDataAccess }) {
     }
     let usersDb = await UserDataAccess();
 
-    const userToBeDeleted = await usersDb.findById(id);
+    const userToBeDeleted = await usersDb.findById({ id });
 
     if (!userToBeDeleted) {
       return deleteNothing();
@@ -23,7 +23,7 @@ export default function makeRemoveUser({ UserDataAccess }) {
   }
 
   async function hardDelete(User, usersDb) {
-    await usersDb.remove(User);
+    await usersDb.remove({ id: User.id });
     return {
       deletedCount: 1,
       softDelete: false,

@@ -3,40 +3,29 @@ import { User } from "../index";
 
 describe("user", () => {
   it("must have an email", () => {
-    const user = makeFakeUser({ email: null });
-    expect(() => User(user)).toThrow("User must have a valid email.");
+    const user = User(makeFakeUser({ email: null }));
+    expect(() => user.validate()).toThrow("user_email_invalid");
   });
 
   it("must have a valid userName", () => {
-    const user = makeFakeUser({ userName: null });
-    expect(() => User(user)).toThrow("User must have a valid name.");
+    const user = User(makeFakeUser({ userName: null }));
+    expect(() => user.validate()).toThrow("user_username_invalid");
   });
   it("must have valid name", () => {
-    const user = makeFakeUser({ firstName: null });
-    expect(() => User(user)).toThrow(
-      "User must have a valid first and last name."
-    );
+    const user = User(makeFakeUser({ firstName: null }));
+    expect(() => user.validate()).toThrow("user_name_invalid");
   });
 
   it("must have valid last name", () => {
-    const user = makeFakeUser({ lastName: null });
-    expect(() => User(user)).toThrow(
-      "User must have a valid first and last name."
-    );
-  });
-
-  it("must have valid password", () => {
-    const user = makeFakeUser({ password: `12345` });
-    expect(() => User(user)).toThrow(
-      "User must have a valid password, please make sure to make the password at least 6 characters."
-    );
+    const user = User(makeFakeUser({ lastName: null }));
+    expect(() => user.validate()).toThrow("user_name_invalid");
   });
 
   it("can have an id", () => {
-    const user = makeFakeUser({ id: "invalid" });
-    expect(() => User(user)).toThrow("User must have a valid id.");
-    const noId = makeFakeUser({ id: undefined });
-    expect(() => User(noId)).not.toThrow();
+    const user = User(makeFakeUser({ id: "invalid" }));
+    expect(() => user.validate()).toThrow("user_id_invalid");
+    const noId = User(makeFakeUser({ id: undefined }));
+    expect(() => noId.validate()).not.toThrow();
   });
 
   it("is createdOn now in UTC", () => {

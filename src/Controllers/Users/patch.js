@@ -1,25 +1,24 @@
 export default function makePatchUser({ editUser }) {
   return async function patchUser(httpRequest) {
     try {
-      const { userInfo } = httpRequest.body;
-      const toEdit = {
-        ...userInfo,
-        id: httpRequest.params.id,
-      };
+      const { ...changes } = httpRequest.body;
 
-      const patched = await editUser(toEdit);
-      const timestamp = new Date(userInfo.modifiedOn).toUTCString();
+      const patched = await editUser({
+        ...changes,
+        id: httpRequest.params.id,
+        files: httpRequest.files,
+      });
+      const timestamp = new Date(changes.modifiedOn).toUTCString();
       return {
         headers: {
           "Content-Type": "application/json",
           "Last-Modified": timestamp,
         },
         statusCode: 200,
-        body: { patched },
+        body: { ...patched },
       };
     } catch (e) {
       // TODO: Error logging
-      console.log(e);
       if (e.name === "RangeError") {
         return {
           headers: {

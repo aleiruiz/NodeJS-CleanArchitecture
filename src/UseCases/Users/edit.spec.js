@@ -1,14 +1,16 @@
 import makeEditUser from "./edit";
 import makeFakeUser from "../../../__test__/fixtures/entities/user";
 import UserDB from "../../DataAccess/User";
+import GenericsDB from "../../DataAccess/Generics";
 import connectToDB from "../../../__test__/fixtures/db";
 
 describe("edit user", () => {
   let UserDataAccess;
   let UserAccess;
   beforeAll(async () => {
-    UserDataAccess = async () => await UserDB({ connectToDB });
-    UserAccess = await UserDB({ connectToDB });
+    let dataAccess = await GenericsDB({ connectToDB });
+    UserDataAccess = async () => await UserDB({ dataAccess });
+    UserAccess = await UserDB({ dataAccess });
   });
   it("must include an id", () => {
     const editUser = makeEditUser({
@@ -28,9 +30,10 @@ describe("edit user", () => {
     const fakeUser = makeFakeUser({
       modifiedOn: undefined,
     });
-    const inserted = await UserAccess.insert({ userInfo: fakeUser });
+    await UserAccess.insert({ ...fakeUser });
     const edited = await editUser({ ...fakeUser, userName: "changed" });
-    expect(edited.userName).toBe("changed");
+    expect(edited).toBe(1);
+    const inserted = await UserAccess.findById({ ...fakeUser });
     expect(inserted.modifiedOn).not.toBe(edited.modifiedOn);
   });
 });

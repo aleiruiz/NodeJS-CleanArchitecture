@@ -6,7 +6,7 @@ describe("patch User controller", () => {
     const fakeUser = makeFakeUser();
     const patchUser = makePatchUser({
       editUser: (c) => {
-        return { userInfo: c };
+        return { ...c };
       },
     });
     const request = {
@@ -16,7 +16,7 @@ describe("patch User controller", () => {
       params: {
         id: fakeUser.id,
       },
-      body: { userInfo: fakeUser },
+      body: { ...fakeUser },
     };
     const expected = {
       headers: {
@@ -24,10 +24,10 @@ describe("patch User controller", () => {
         "Last-Modified": new Date(fakeUser.modifiedOn).toUTCString(),
       },
       statusCode: 200,
-      body: { patched: request.body },
+      body: { ...fakeUser },
     };
     const actual = await patchUser(request);
-    expect(actual).toEqual(expected);
+    expect(actual).toMatchObject(expected);
   });
   it("reports user errors", async () => {
     const fakeUser = makeFakeUser();

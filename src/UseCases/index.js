@@ -1,17 +1,12 @@
-import makeAddUser from "./Users/add";
-import makeEditUser from "./Users/edit";
-import makeRemoveUser from "./Users/remove";
-import { UserDataAccess } from "../DataAccess";
-
-const addUser = makeAddUser({ UserDataAccess });
-const editUser = makeEditUser({ UserDataAccess });
-const removeUser = makeRemoveUser({ UserDataAccess });
+import { addUser, editUser, removeUser, getUser } from "./Users";
+import { login } from "./Authentication";
 
 const UserService = Object.freeze({
   addUser,
   editUser,
   removeUser,
+  login,
 });
 
 export default UserService;
-export { addUser, editUser, removeUser };
+export { addUser, editUser, removeUser, getUser, login };

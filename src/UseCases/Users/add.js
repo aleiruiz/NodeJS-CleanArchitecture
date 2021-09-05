@@ -1,14 +1,38 @@
-export default function makeAddUser({ UserDataAccess }) {
-  return async function addUser(userInfo) {
-    if (userInfo.password !== userInfo.confirmPassword) {
-      throw new Error("Password must be confirmed.");
+export default function makeAddUser({
+  UserDataAccess,
+  hashUtilities,
+  fileUtilities,
+}) {
+  return async function addUser({ files, ...userInfo } = {}) {
+    if (!userInfo.password || userInfo.password.length < 6) {
+      throw new Error("user_invalid_password");
     }
-    let usersDb = await UserDataAccess();
-    const exists = await usersDb.findAll({ query: { email: userInfo.email } });
+    if (userInfo.password !== userInfo.confirmPassword) {
+      throw new Error("password_confirmation_needed");
+    }
+    const usersDb = await UserDataAccess();
+    const exists = await usersDb.find({
+      email: userInfo.email,
+    });
     if (exists.length != 0) {
-      throw new Error("User already exists.");
+      throw new Error("user_already_exists");
+    }
+    const pwdHash = hashUtilities.createsPassword(userInfo.password);
+
+    const user = {
+      ...userInfo,
+      password: pwdHash.hash,
+      salt: pwdHash.salt,
+    };
+
+    if (files) {
+      user.profilePic = await fileUtilities.uploadBlob(
+        files.profilePic,
+        "prf",
+        "image"
+      );
     }
 
-    return usersDb.insert({ userInfo });
+    return usersDb.insert({ ...user });
   };
 }

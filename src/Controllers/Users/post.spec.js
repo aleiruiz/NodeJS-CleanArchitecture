@@ -1,4 +1,5 @@
 import makePostUser from "./post";
+import trans from "../../Localization";
 import makeFakeUser from "../../../__test__/fixtures/entities/user";
 
 describe("post User controller", () => {
@@ -18,11 +19,11 @@ describe("post User controller", () => {
         "Content-Type": "application/json",
         "Last-Modified": new Date(request.body.modifiedOn).toUTCString(),
       },
-      statusCode: 201,
-      body: { posted: request.body },
+      statusCode: 200,
+      body: { ...request.body },
     };
     const actual = await postUser(request);
-    expect(actual).toEqual(expected);
+    expect(actual).toMatchObject(expected);
   });
   it("reports user errors", async () => {
     const postUser = makePostUser({
@@ -35,6 +36,7 @@ describe("post User controller", () => {
       headers: {
         "Content-Type": "application/json",
       },
+      trans: trans.__,
       body: fakeUser,
     };
     const expected = {
