@@ -6,7 +6,8 @@ Microservice structure based on DevMastery's video and Bob Martin's Clean Archit
 
 - [Git](https://git-scm.com/downloads)
 - [Node JS](https://nodejs.org/en/)
-- [Mongo DB](https://www.mongodb.com) (To use the Mongo DB interface as shown in the Mastery Monday youtube video, you need to install Mongo Compass)
+- [Mongo DB](https://www.mongodb.com) (To use the Mongo DB interface as shown in the Mastery Monday youtube video, you need to install MongoDB)
+- [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/?&ef_id=Cj0KCQjw1dGJBhD4ARIsANb6Odn36brqcwP6U9QFhLXn_MmTyFGI5QgZAvj-ijYv9KfLiNIRvQbfR84aAiePEALw_wcB:G:s&OCID=AID2200215_SEM_Cj0KCQjw1dGJBhD4ARIsANb6Odn36brqcwP6U9QFhLXn_MmTyFGI5QgZAvj-ijYv9KfLiNIRvQbfR84aAiePEALw_wcB:G:s&gclid=Cj0KCQjw1dGJBhD4ARIsANb6Odn36brqcwP6U9QFhLXn_MmTyFGI5QgZAvj-ijYv9KfLiNIRvQbfR84aAiePEALw_wcB) (This API uses Azure as its streaming provider for pictures and videos)
 
 #### 1. Clone the repo and install dependencies
 
